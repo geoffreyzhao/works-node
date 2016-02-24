@@ -1,0 +1,23 @@
+{
+  "name": "works-node",
+  "description": "",
+  "main": "",
+  "authors": [
+    "shuaigeng.zhao <shuaigeng.zhao@travelzen.com>"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "flat-ui": "^2.2.2",
+    "underscore": "^1.8.3"
+  }
+}
