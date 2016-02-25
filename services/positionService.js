@@ -6,20 +6,37 @@ mongoose.connect('mongodb://localhost/works');
 var Schema = mongoose.Schema;
 
 var positionSchema = new Schema({
-    isVisible: Boolean,
-    positionId: String,
+    is_visible: Boolean,
+    position_id: String,
     name: String,
-    formatCreateTime: String,
-    workYear: String,
+    format_create_time: String,
+    work_year: String,
     salary: String,
     education: String,
-    jobNature: String,
-    positionAdvantage: String,
-    companyLabelList: [String],
-    createTime: Date,
+    job_nature: String,
+    position_advantage: String,
+    company_label_list: [String],
+    create_time: Date,
+    company: {
+        company_name: String,
+        company_short_name: String,
+        industry_field: String,
+        finance_stage: String,
+        company_size: String,
+        logo_link: String,
+        homepage: String,
+        address: String
+    },
+    publisher: {
+        name: String,
+        title: String,
+        timely_rate: String,
+        avg_time: String
+    },
+    is_favorite: Boolean,
     timestamp: Date
 }, {
-    collection: 'position'
+    collection: 'positions'
 });
 
 var positionModel = mongoose.model('Position', positionSchema);
@@ -35,17 +52,21 @@ function findPosition(opts) {
 }
 
 //function get() {
-    positionModel.find({
-        name: "前端开发工程师"
-    },{}, {
-        limit: 10,
-        skip: 10
-    }, function(err, positions){
-        if (err) {
-            console.log('get position error');
+positionModel
+    .find({})
+    .where()
+    .sort('create_time')
+    .skip()
+    .limit()
+    .exec(function(err, docs){
+        if (err != null) {
+            console.log(err);
         } else {
-            //console.log(positions);
-            exports.positionList = positions;
+            exports.positionList = docs;
+            //for (var i = 0; i < docs.length; i++) {
+            //    console.log(docs[i].company.company_short_name);
+            //    console.log("========");
+            //}
         }
     });
 //}
