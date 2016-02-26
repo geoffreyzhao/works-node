@@ -2,7 +2,9 @@
   outline: none; }
 
 body {
-  font-family: "Microsoft YaHei",Lato,Helvetica,Arial,sans-serif; }
+  font-family: "Microsoft YaHei",Lato,Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  color: #666; }
 
 header {
   text-align: center;
@@ -14,8 +16,36 @@ footer {
   padding: 10px 0;
   font-size: 16px; }
 
+p {
+  font-size: 16px;
+  margin: 0; }
+
 .main-container {
   width: 1170px;
   margin: 10px auto; }
+  .main-container .main-nav {
+    margin-bottom: 10px; }
+
+.position-list .position-item {
+  border: 1px solid #3498DB;
+  border-top-width: 4px;
+  padding: 10px;
+  margin-bottom: 15px; }
+  .position-list .position-item .company-info .logo-wrapper {
+    margin-right: 15px;
+    border: 2px solid #ECF0F1;
+    border-radius: 100%; }
+  .position-list .position-item .company-info .com-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 100%; }
+  .position-list .position-item .company-info .quote-left,
+  .position-list .position-item .company-info .quote-right {
+    background: url("/public/images/iconfont-yinhao.png") no-repeat;
+    width: 32px;
+    height: 16px;
+    display: inline-block; }
+  .position-list .position-item .company-info .quote-right {
+    transform: rotate(180deg); }
 
 /*# sourceMappingURL=main.css.map */

@@ -4,6 +4,7 @@
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/works');
 var Schema = mongoose.Schema;
+var bodyParser = require('body-parser');
 
 var positionSchema = new Schema({
     is_visible: Boolean,
@@ -16,6 +17,7 @@ var positionSchema = new Schema({
     job_nature: String,
     position_advantage: String,
     company_label_list: [String],
+    position_desc: String,
     create_time: Date,
     company: {
         company_name: String,
@@ -57,7 +59,7 @@ positionModel
     .where()
     .sort('create_time')
     .skip()
-    .limit()
+    .limit(10)
     .exec(function(err, docs){
         if (err != null) {
             console.log(err);

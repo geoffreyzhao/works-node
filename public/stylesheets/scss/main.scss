@@ -4,8 +4,15 @@
   outline: none;
 }
 
+$baseFontSize: 16px;
+$baseColor: #666;
+$baseBorderColor: #3498DB;
+$baseImgUrl: '/public/images';
+
 body {
   font-family: "Microsoft YaHei",Lato,Helvetica,Arial,sans-serif;
+  font-size: $baseFontSize;
+  color: $baseColor;
 }
 
 header {
@@ -17,10 +24,57 @@ header {
 footer {
   text-align: center;
   padding: 10px 0;
-  font-size: 16px;
+  font-size: $baseFontSize;
+}
+
+p {
+  font-size: $baseFontSize;
+  margin: 0;
 }
 
 .main-container {
   width: 1170px;
   margin: 10px auto;
+
+  .main-nav {
+    margin-bottom: 10px;
+  }
+}
+
+.position-list {
+
+  .position-item {
+    border: 1px solid $baseBorderColor;
+    border-top-width: 4px;
+    padding: 10px;
+    margin-bottom: 15px;
+
+    .company-info {
+
+      .logo-wrapper {
+        margin-right: 15px;
+        border: 2px solid #ECF0F1;
+        border-radius: 100%;
+      }
+
+      .com-logo {
+        width: 48px;
+        height: 48px;
+        border-radius: 100%;
+      }
+
+      .quote-left,
+      .quote-right {
+        background: url('#{$baseImgUrl}/iconfont-yinhao.png') no-repeat;
+        width: 32px;
+        height: 32px;
+        display: inline-block;
+      }
+
+      .quote-right {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
 }
