@@ -43,7 +43,7 @@ p {
   .position-list .position-item .company-info .quote-right {
     background: url("/public/images/iconfont-yinhao.png") no-repeat;
     width: 32px;
-    height: 16px;
+    height: 32px;
     display: inline-block; }
   .position-list .position-item .company-info .quote-right {
     transform: rotate(180deg); }
