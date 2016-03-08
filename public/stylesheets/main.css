@@ -26,26 +26,115 @@ p {
   .main-container .main-nav {
     margin-bottom: 10px; }
 
-.position-list .position-item {
-  border: 1px solid #3498DB;
-  border-top-width: 4px;
-  padding: 10px;
-  margin-bottom: 15px; }
-  .position-list .position-item .company-info .logo-wrapper {
-    margin-right: 15px;
-    border: 2px solid #ECF0F1;
-    border-radius: 100%; }
-  .position-list .position-item .company-info .com-logo {
-    width: 48px;
-    height: 48px;
-    border-radius: 100%; }
-  .position-list .position-item .company-info .quote-left,
-  .position-list .position-item .company-info .quote-right {
-    background: url("/public/images/iconfont-yinhao.png") no-repeat;
-    width: 32px;
-    height: 32px;
-    display: inline-block; }
-  .position-list .position-item .company-info .quote-right {
-    transform: rotate(180deg); }
+.position-list {
+  padding: 0; }
+  .position-list .position-item {
+    border: 1px solid #3498DB;
+    border-top-width: 4px;
+    padding: 10px;
+    margin-bottom: 15px; }
+    .position-list .position-item .info-block:nth-child(2) {
+      border-left: 1px dashed #3498DB;
+      border-right: 1px dashed #3498DB; }
+    .position-list .position-item:hover .position-desc, .position-list .position-item:hover .oper-btn-block {
+      display: block !important;
+      visibility: visible !important; }
+    .position-list .position-item .oper-btn {
+      line-height: 1; }
+    .position-list .position-item .company-info > li:nth-child(2) {
+      padding-top: 15px; }
+    .position-list .position-item .company-info .logo-wrapper {
+      margin-right: 15px;
+      border: 2px solid #ECF0F1;
+      border-radius: 100%; }
+    .position-list .position-item .company-info .com-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 100%; }
+    .position-list .position-item .company-info .company-tag label {
+      display: inline-block;
+      line-height: 1;
+      margin-right: 10px; }
+    .position-list .position-item .company-info .quote-left,
+    .position-list .position-item .company-info .quote-right {
+      display: inline-block;
+      vertical-align: middle;
+      background: url("/public/images/iconfont-yinhao.png") no-repeat;
+      width: 24px;
+      height: 24px;
+      vertical-align: text-bottom;
+      margin-right: 10px; }
+    .position-list .position-item .company-info .quote-right {
+      transform: rotate(180deg);
+      vertical-align: text-top;
+      margin-left: 10px; }
+
+.favor .fui-heart {
+  font-size: 28px;
+  margin-left: 10px;
+  vertical-align: middle; }
+  .favor .fui-heart:hover {
+    cursor: pointer; }
+  .favor .fui-heart.current {
+    cursor: pointer;
+    color: #1abc9c; }
+
+.position-desc {
+  border-top: 1px dashed #666;
+  margin-top: 30px;
+  padding-top: 15px; }
+  .position-desc .description {
+    font-size: 20px;
+    margin: 8px 0; }
+
+.ignore {
+  display: inline-block; }
+  .ignore .ignore-icon {
+    display: inline-block;
+    vertical-align: middle;
+    background: url("/public/images/iconfont-hulue.png") no-repeat;
+    width: 28px;
+    height: 28px;
+    margin-left: 10px; }
+    .ignore .ignore-icon:hover {
+      cursor: pointer; }
+
+.pagination-wrapper {
+  text-align: center; }
+
+.search-condition {
+  background-color: #fafafa;
+  border: 1px solid #e8e8e8;
+  padding: 15px; }
+  .search-condition .search-item {
+    margin-bottom: 10px; }
+    .search-condition .search-item .tag {
+      padding: 2px 18px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      display: inline-block; }
+      .search-condition .search-item .tag.active {
+        background-color: #1abc9c;
+        color: #fff; }
+  .search-condition input.form-control {
+    display: inline-block;
+    margin-right: 5px; }
+
+.position-sort-bar {
+  background-color: #fafafa;
+  border: 1px solid #e8e8e8;
+  padding: 5px 15px;
+  margin: 15px 0;
+  text-align: right; }
+  .position-sort-bar .sort-tag {
+    display: inline-block;
+    padding: 2px 10px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer; }
+    .position-sort-bar .sort-tag.active {
+      background-color: #1abc9c;
+      color: #fff; }
 
 /*# sourceMappingURL=main.css.map */

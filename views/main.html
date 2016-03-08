@@ -30,36 +30,95 @@
                 </ul>
             </div>
         </nav>
+        <div>数据更新时间：<%= new Date() %><span class="text-muted">数据来自于拉勾网</span></div>
+        <section class="search-condition">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="search-item">
+                        <span>工作经验：</span>
+                        <span class="tag active">1-3年</span>
+                        <span class="tag active">3-5年</span>
+                    </div>
+                    <div class="search-item">
+                        <span>简历处理及时率：</span>
+                        <input type="text" class="form-control input-sm" style="width: 50px;">%以上
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="search-item">
+                        <span>薪资范围：</span>
+                        <input type="text" class="form-control input-sm" style="width: 115px;">k以上
+                    </div>
+                    <div class="search-item">
+                        <span>简历处理平均时长：</span>
+                        <input type="text" class="form-control input-sm" style="width: 50px;">天以内
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="search-item">
+                        <span>公司地址：</span>
+                        <input type="text" class="form-control input-sm" style="width: 130px;" placeholder="地址关键字">
+                    </div>
+                    <div class="search-item" style="padding-left: 75px;">
+                        <button class="btn btn-primary btn-wide" id="search">
+                            检 索
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="position-sort-bar">
+            <span class="sort-tag active">默认</span>
+            <span class="sort-tag active">最新</span>
+            <label>
+                <span>薪资</span>
+                <i class="sort-icon asc"></i>
+            </label>
+            <label>
+                <span>简历处理及时率</span>
+                <i class="sort-icon asc"></i>
+            </label>
+        </section>
         <div class="container position-list">
-            <div>数据更新时间：<%= new Date() %><span class="text-muted">数据来自于拉勾网</span></div>
             <% for (var i = 0; i < positionList.length; i++) { %>
             <div class="position-item">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-7 info-block">
                         <ul class="company-info list-unstyled">
                             <li class="clearfix">
                                 <div class="logo-wrapper pull-left">
                                     <img class="com-logo" src="http://www.lagou.com/<%= positionList[i].company.logo_link %>" alt="">
                                 </div>
-                                <div class="pull-left">
+                                <div class="pull-left" style="max-width: 450px;">
+                                    <p class="company-tag">
+                                        <label>
+                                            <span class="fui-tag"></span>
+                                            <span><%= positionList[i].company.company_name %></span>
+                                        </label>
+                                        <label>
+                                            <span class="fui-tag"></span>
+                                            <span><%= positionList[i].company.industry_field %></span>
+                                        </label>
+                                        <label>
+                                            <span class="fui-tag"></span>
+                                            <span><%= positionList[i].company.finance_stage %></span>
+                                        </label>
+                                        <label>
+                                            <span class="fui-tag"></span>
+                                            <span><%= positionList[i].company.company_size %></span>
+                                        </label>
+                                    </p>
                                     <p>
                                         <span class="fui-tag"></span>
-                                        <span><%= positionList[i].company.company_name %></span>
-                                        <span class="fui-tag"></span>
-                                        <span><%= positionList[i].company.industry_field %></span>
-                                        <span class="fui-tag"></span>
-                                        <span><%= positionList[i].company.finance_stage %></span>
-                                        <span class="fui-tag"></span>
-                                        <span><%= positionList[i].company.company_size %></span>
+                                        <span><%= positionList[i].company.company_short_name %></span>
                                     </p>
-                                    <p><span class="fui-tag"></span><%= positionList[i].company.company_short_name %></p>
                                 </div>
                             </li>
                             <li><span class="quote-left"></span><%= positionList[i].position_advantage %></li>
                             <li><%= positionList[i].company_label_list %><span class="quote-right"></span></li>
                         </ul>
                     </div>
-                    <div class="col-md-3 text-right">
+                    <div class="col-md-3 text-left info-block">
                         <ul class="list-unstyled">
                             <li><%= positionList[i].name %></li>
                             <li><%= positionList[i].salary %></li>
@@ -67,7 +126,7 @@
                             <li><%= positionList[i].job_nature %></li>
                         </ul>
                     </div>
-                    <div class="col-md-3 text-right">
+                    <div class="col-md-2 text-right info-block">
                         <ul class="list-unstyled">
                             <li><%= positionList[i].format_create_time %></li>
                             <li><%= positionList[i].publisher.name %><%= positionList[i].publisher.title %></li>
@@ -87,17 +146,40 @@
                             <span><%= positionList[i].company.address %></span>
                         </div>
                     </div>
-                    <div class="col-md-2">
-                        <span>加入收藏<span class="fui-heart"></span></span>
-                        <span class="fui-triangle-down"></span>
+                    <div class="col-md-2 text-right oper-btn-block hidden">
+                        <span class="favor oper-btn">加入收藏<span class="fui-heart"></span></span>
+                        <span class="ignore oper-btn">忽略<i class="ignore-icon"></i></span>
+                        <!--<span class="fui-triangle-down"></span>-->
                     </div>
                 </div>
-                <div class="position-desc">
+                <div class="position-desc hidden">
                     <div class="hidden"><%= positionList[i].position_desc %></div>
                     <div class="show"></div>
                 </div>
             </div>
             <% } %>
+        </div>
+        <div class="pagination-wrapper">
+            <div class="pagination pagination-info">
+                <a href="#fakelink" class="btn btn-info previous">
+                    <i class="fui-arrow-left"></i>
+                </a>
+                <ul>
+                    <li><a href="#fakelink">1</a></li>
+                    <li><a href="#fakelink">2</a></li>
+                    <li><a href="#fakelink">3</a></li>
+                    <li><a href="#fakelink">4</a></li>
+                    <li><a href="#fakelink">5</a></li>
+                    <li><a href="#fakelink">6</a></li>
+                    <li><a href="#fakelink">7</a></li>
+                    <li><a href="#fakelink">8</a></li>
+                    <li><a href="#fakelink">9</a></li>
+                    <li><a href="#fakelink">10</a></li>
+                </ul>
+                <a href="#fakelink" class="btn btn-info next">
+                    <i class="fui-arrow-right"></i>
+                </a>
+            </div>
         </div>
     </div>
     <footer>FOOTER</footer>
