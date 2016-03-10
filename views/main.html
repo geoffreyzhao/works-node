@@ -14,6 +14,7 @@
 
     <script src="../bower_components/flat-ui/dist/js/vendor/jquery.min.js"></script>
     <script src="../bower_components/flat-ui/dist/js/flat-ui.min.js"></script>
+    <script src="../bower_components/underscore/underscore-min.js"></script>
     <script src="../public/javascripts/common.js"></script>
 
 </head>
@@ -32,40 +33,43 @@
         </nav>
         <div>数据更新时间：<%= new Date() %><span class="text-muted">数据来自于拉勾网</span></div>
         <section class="search-condition">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="search-item">
-                        <span>工作经验：</span>
-                        <span class="tag active">1-3年</span>
-                        <span class="tag active">3-5年</span>
+            <form action="/positions/search" method="post">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="search-item">
+                            <span>工作经验：</span>
+                            <span class="tag active">1-3年</span>
+                            <span class="tag active">3-5年</span>
+                        </div>
+                        <div class="search-item">
+                            <span>简历处理及时率：</span>
+                            <input type="text" class="form-control input-sm" style="width: 50px;">%以上
+                        </div>
                     </div>
-                    <div class="search-item">
-                        <span>简历处理及时率：</span>
-                        <input type="text" class="form-control input-sm" style="width: 50px;">%以上
+                    <div class="col-md-4">
+                        <div class="search-item">
+                            <span>薪资范围：</span>
+                            <input type="text" class="form-control input-sm" style="width: 115px;">k以上
+                        </div>
+                        <div class="search-item">
+                            <span>简历处理平均时长：</span>
+                            <input type="text" class="form-control input-sm" style="width: 50px;">天以内
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="search-item">
+                            <span>公司地址：</span>
+                            <input type="text" name="address" class="form-control input-sm" style="width: 130px;" placeholder="地址关键字"
+                                   value="<%= condition ? condition.address : '' %>">
+                        </div>
+                        <div class="search-item" style="padding-left: 75px;">
+                            <button type="submit" class="btn btn-primary btn-wide" id="searchBtn">
+                                检 索
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="search-item">
-                        <span>薪资范围：</span>
-                        <input type="text" class="form-control input-sm" style="width: 115px;">k以上
-                    </div>
-                    <div class="search-item">
-                        <span>简历处理平均时长：</span>
-                        <input type="text" class="form-control input-sm" style="width: 50px;">天以内
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="search-item">
-                        <span>公司地址：</span>
-                        <input type="text" class="form-control input-sm" style="width: 130px;" placeholder="地址关键字">
-                    </div>
-                    <div class="search-item" style="padding-left: 75px;">
-                        <button class="btn btn-primary btn-wide" id="search">
-                            检 索
-                        </button>
-                    </div>
-                </div>
-            </div>
+            </form>
         </section>
         <section class="position-sort-bar">
             <span class="sort-tag active">默认</span>

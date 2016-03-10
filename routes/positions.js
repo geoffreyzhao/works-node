@@ -7,9 +7,34 @@ var positionService = require('../services/positionService');
 
 router.get('/', function(req, res, next){
 
-    res.render('main', {
-        positionList: positionService.positionList
+    positionService.findPosition({}, function(err, positionList){
+
+        if (err) {
+            console.log(err);
+        } else {
+            res.render('main', {
+                positionList: positionList,
+                condition: {}
+            });
+        }
     });
 });
 
-exports = module.exports = router;
+router.post('/search', function(req, res, next){
+
+    var opts = req.body;
+
+    positionService.findPosition(opts, function(err, positionList){
+
+        if (err) {
+            console.log(err);
+        } else {
+            res.render('main', {
+                positionList: positionList,
+                condition: opts
+            });
+        }
+    });
+});
+
+module.exports = router;

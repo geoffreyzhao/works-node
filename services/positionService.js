@@ -4,7 +4,8 @@
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/works');
 var Schema = mongoose.Schema;
-var bodyParser = require('body-parser');
+
+var _ = require('underscore');
 
 var positionSchema = new Schema({
     is_visible: Boolean,
@@ -27,6 +28,7 @@ var positionSchema = new Schema({
         company_size: String,
         logo_link: String,
         homepage: String,
+
         address: String
     },
     publisher: {
@@ -43,34 +45,37 @@ var positionSchema = new Schema({
 
 var positionModel = mongoose.model('Position', positionSchema);
 
-function findPosition(opts) {
-    if (!opts) {
-        opts = {};
-        opts.curPage = 1;
-        opts.pageSize = 10;
-    } else {
+exports.findPosition = function(opts, callback) {
 
-    }
+    var defaultOptions = {
+        workYear: ['不限', '1-3年', '3-5年'],
+        salary: 12,
+        address: "",
+        timelyRate: 0,
+        avgTime: 9,
+
+        curPage: 1,
+        pageSize: 10,
+
+        sortField: "_id",
+        sortOrder: 1
+    };
+
+    var options = _.extend(defaultOptions, opts || {});
+
+    var sort = options.sortOrder < 0 ? '-' + options.sortField
+        : options.sortField;
+
+    positionModel
+        .find({
+            'company.address': {$regex: options.address},
+            'work_year': {$in: options.workYear},
+            'salary': {$regex: '(^1[2-9])|(^2[0-9])k'},
+            'publisher.timely_rate': {$gte: options.timelyRate + '%'},
+            'publisher.avg_time': {$lte: options.avgTime + '天'}
+        })
+        .sort(sort)
+        .skip((options.curPage - 1) * options.pageSize)
+        .limit(options.pageSize)
+        .exec(callback);
 }
-
-//function get() {
-positionModel
-    .find({})
-    .where()
-    .sort('create_time')
-    .skip()
-    .limit(10)
-    .exec(function(err, docs){
-        if (err != null) {
-            console.log(err);
-        } else {
-            exports.positionList = docs;
-            //for (var i = 0; i < docs.length; i++) {
-            //    console.log(docs[i].company.company_short_name);
-            //    console.log("========");
-            //}
-        }
-    });
-//}
-
-//get();
