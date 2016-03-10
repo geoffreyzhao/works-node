@@ -49,7 +49,7 @@ exports.findPosition = function(opts, callback) {
 
     var defaultOptions = {
         workYear: ['不限', '1-3年', '3-5年'],
-        salary: 12,
+        salary: '12',
         address: "",
         timelyRate: 0,
         avgTime: 9,
@@ -63,6 +63,15 @@ exports.findPosition = function(opts, callback) {
 
     var options = _.extend(defaultOptions, opts || {});
 
+    var arr =  options.salary.split('');
+    var salaryRegex = "";
+
+    if (arr.length == 1) {
+        salaryRegex = '^[' + arr[0] + '-9]|^[1-2][0-9]k'
+    } else if (arr.length == 2) {
+        salaryRegex = '^[' + arr[0] + '-9][' + arr[1] + '-9]k'
+    }
+
     var sort = options.sortOrder < 0 ? '-' + options.sortField
         : options.sortField;
 
@@ -70,7 +79,7 @@ exports.findPosition = function(opts, callback) {
         .find({
             'company.address': {$regex: options.address},
             'work_year': {$in: options.workYear},
-            'salary': {$regex: '(^1[2-9])|(^2[0-9])k'},
+            'salary': {$regex: salaryRegex},
             'publisher.timely_rate': {$gte: options.timelyRate + '%'},
             'publisher.avg_time': {$lte: options.avgTime + '天'}
         })

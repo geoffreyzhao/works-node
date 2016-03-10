@@ -38,28 +38,32 @@
                     <div class="col-md-4">
                         <div class="search-item">
                             <span>工作经验：</span>
-                            <span class="tag active">1-3年</span>
-                            <span class="tag active">3-5年</span>
+                            <span class="tag active work-year">1-3年</span>
+                            <span class="tag active work-year">3-5年</span>
+                            <!--<input type="hidden" value="" id="workYear" name="workYear">-->
                         </div>
                         <div class="search-item">
                             <span>简历处理及时率：</span>
-                            <input type="text" class="form-control input-sm" style="width: 50px;">%以上
+                            <input name="timelyRate" type="text" class="form-control input-sm" style="width: 50px;"
+                                 value="<%= condition ? condition.timelyRate : '50' %>">%以上
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="search-item">
                             <span>薪资范围：</span>
-                            <input type="text" class="form-control input-sm" style="width: 115px;">k以上
+                            <input name="salary" type="text" class="form-control input-sm" style="width: 115px;"
+                                 value="<%= condition ? condition.salary : '12' %>" >k以上
                         </div>
                         <div class="search-item">
                             <span>简历处理平均时长：</span>
-                            <input type="text" class="form-control input-sm" style="width: 50px;">天以内
+                            <input name="avgTime" type="text" class="form-control input-sm" style="width: 50px;"
+                                 value="<%= condition ? condition.avgTime : '7' %>" >天以内
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="search-item">
                             <span>公司地址：</span>
-                            <input type="text" name="address" class="form-control input-sm" style="width: 130px;" placeholder="地址关键字"
+                            <input type="text" name="address" class="form-control input-sm" style="width: 130px;" placeholder="地址关键字,用|分开"
                                    value="<%= condition ? condition.address : '' %>">
                         </div>
                         <div class="search-item" style="padding-left: 75px;">
@@ -194,6 +198,15 @@
             $('[data-toggle="switch"]').bootstrapSwitch();
 
             fillDescContent();
+
+            $(".work-year").click(function(){
+                $(this).toggleClass("active");
+                var tmp = "";
+                $(".work-year.active").each(function(){
+                    tmp += $(this).html() + ',';
+                });
+                $("#workYear").val(tmp);
+            });
         });
 
         function fillDescContent() {
