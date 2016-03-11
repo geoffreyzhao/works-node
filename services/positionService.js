@@ -48,7 +48,7 @@ var positionModel = mongoose.model('Position', positionSchema);
 exports.findPosition = function(opts, callback) {
 
     var defaultOptions = {
-        workYear: ['不限', '1-3年', '3-5年'],
+        workYear: "1-3年,3-5年",
         salary: '12',
         address: "",
         timelyRate: 0,
@@ -72,13 +72,13 @@ exports.findPosition = function(opts, callback) {
         salaryRegex = '^[' + arr[0] + '-9][' + arr[1] + '-9]k'
     }
 
-    var sort = options.sortOrder < 0 ? '-' + options.sortField
-        : options.sortField;
+    var field = (options.sortField == 'timely_rate') ? 'publisher.timely_rate' : options.sortField;
+    var sort = options.sortOrder < 0 ? '-' + field : field;
 
     positionModel
         .find({
             'company.address': {$regex: options.address},
-            'work_year': {$in: options.workYear},
+            'work_year': {$in: options.workYear.split(',')},
             'salary': {$regex: salaryRegex},
             'publisher.timely_rate': {$gte: options.timelyRate + '%'},
             'publisher.avg_time': {$lte: options.avgTime + '天'}

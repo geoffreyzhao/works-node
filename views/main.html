@@ -21,6 +21,7 @@
 <body>
     <header class="palette-peter-river">HEADER</header>
     <div class="main-container">
+        <form action="/positions/search" method="post" id="searchForm">
         <nav class="navbar navbar-inverse navbar-embossed main-nav" role="navigation">
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-left">
@@ -33,14 +34,13 @@
         </nav>
         <div>数据更新时间：<%= new Date() %><span class="text-muted">数据来自于拉勾网</span></div>
         <section class="search-condition">
-            <form action="/positions/search" method="post">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="search-item">
                             <span>工作经验：</span>
-                            <span class="tag active work-year">1-3年</span>
-                            <span class="tag active work-year">3-5年</span>
-                            <!--<input type="hidden" value="" id="workYear" name="workYear">-->
+                            <span class="tag work-year <%= condition.workYear.indexOf('1-3年') != -1 ? 'active' : '' %>">1-3年</span>
+                            <span class="tag work-year <%= condition.workYear.indexOf('3-5年') != -1 ? 'active' : '' %>">3-5年</span>
+                            <input type="hidden" value="<%= condition.workYear %>" id="workYear" name="workYear">
                         </div>
                         <div class="search-item">
                             <span>简历处理及时率：</span>
@@ -63,7 +63,7 @@
                     <div class="col-md-4">
                         <div class="search-item">
                             <span>公司地址：</span>
-                            <input type="text" name="address" class="form-control input-sm" style="width: 130px;" placeholder="地址关键字,用|分开"
+                            <input type="text" name="address" class="form-control input-sm" style="width: 130px;" placeholder="地址关键字"
                                    value="<%= condition ? condition.address : '' %>">
                         </div>
                         <div class="search-item" style="padding-left: 75px;">
@@ -73,19 +73,24 @@
                         </div>
                     </div>
                 </div>
-            </form>
         </section>
         <section class="position-sort-bar">
-            <span class="sort-tag active">默认</span>
-            <span class="sort-tag active">最新</span>
-            <label>
-                <span>薪资</span>
-                <i class="sort-icon asc"></i>
-            </label>
-            <label>
-                <span>简历处理及时率</span>
-                <i class="sort-icon asc"></i>
-            </label>
+            <div id="sortForm">
+                <span class="sort-tag <%= (condition ? condition.sortField : '') == '_id' ? 'active' : '' %>" data-val="_id">默认</span>
+                <span class="sort-tag <%= (condition ? condition.sortField : '') == 'create_time' ? 'active' : '' %>" data-val="create_time">最新</span>
+            </div>
+            <div id="sortForm2">
+                <label data-val="salary" class="sort sort-tag <%= (condition ? condition.sortField : '') == 'salary' ? 'active' : '' %>">
+                    <span>薪资</span>
+                    <span class="order-icon <%= ((condition ? condition.sortField : '') == 'salary') && ((condition ? condition.sortOrder : 0) > 0) ? 'fui-triangle-up' : 'fui-triangle-down' %>"></span>
+                </label>
+                <label data-val="timely_rate" class="sort sort-tag <%= (condition ? condition.sortField : '') == 'timely_rate' ? 'active' : '' %>">
+                    <span>简历处理及时率</span>
+                    <span class="order-icon <%= ((condition ? condition.sortField : '') == 'timely_rate') && ((condition ? condition.sortOrder : 0) > 0) ? 'fui-triangle-up' : 'fui-triangle-down' %>"></span>
+                </label>
+                <input type="hidden" name="sortField" value="<%= condition ? condition.sortField : '_id' %>">
+                <input type="hidden" name="sortOrder" value="<%= condition ? condition.sortOrder : -1 %>">
+            </div>
         </section>
         <div class="container position-list">
             <% for (var i = 0; i < positionList.length; i++) { %>
@@ -176,19 +181,13 @@
                     <li><a href="#fakelink">1</a></li>
                     <li><a href="#fakelink">2</a></li>
                     <li><a href="#fakelink">3</a></li>
-                    <li><a href="#fakelink">4</a></li>
-                    <li><a href="#fakelink">5</a></li>
-                    <li><a href="#fakelink">6</a></li>
-                    <li><a href="#fakelink">7</a></li>
-                    <li><a href="#fakelink">8</a></li>
-                    <li><a href="#fakelink">9</a></li>
-                    <li><a href="#fakelink">10</a></li>
                 </ul>
                 <a href="#fakelink" class="btn btn-info next">
                     <i class="fui-arrow-right"></i>
                 </a>
             </div>
         </div>
+        </form>
     </div>
     <footer>FOOTER</footer>
 
@@ -201,12 +200,44 @@
 
             $(".work-year").click(function(){
                 $(this).toggleClass("active");
-                var tmp = "";
+                var tmp = '';
                 $(".work-year.active").each(function(){
                     tmp += $(this).html() + ',';
                 });
+                if (tmp != '') {
+                    tmp.slice(0, -1)
+                }
                 $("#workYear").val(tmp);
             });
+
+            // 排序
+            $("#sortForm .sort-tag").click(function(){
+                $("input[name='sortField']").val($(this).attr("data-val"));
+                $("#searchForm").submit();
+            });
+
+            $("#sortForm2 .sort-tag").click(function(){
+                var sortField, sortOrder;
+                if ($(this).hasClass("active")) {
+                    sortField = $(this).attr("data-val");
+                    if ($(this).find(".order-icon").hasClass("fui-triangle-up")) {
+                        sortOrder = -1;
+                    } else {
+                        sortOrder = 1;
+                    }
+                } else {
+                    sortField = $(this).attr("data-val");
+                    sortOrder = -1;
+                }
+
+                $("input[name='sortField']").val(sortField);
+                $("input[name='sortOrder']").val(sortOrder);
+
+                $("#searchForm").submit();
+            });
+
+            //  分页
+
         });
 
         function fillDescContent() {
