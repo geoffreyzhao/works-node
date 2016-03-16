@@ -24,7 +24,11 @@ p {
   width: 1170px;
   margin: 10px auto; }
   .main-container .main-nav {
-    margin-bottom: 10px; }
+    margin-bottom: 10px;
+    width: 1170px;
+    z-index: 2; }
+    .main-container .main-nav.affix {
+      top: 2px; }
 
 .position-list {
   padding: 0; }

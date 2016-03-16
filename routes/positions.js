@@ -19,54 +19,39 @@ var options = {
     sortOrder: 1
 };
 
-router.get('/', function(req, res, next){
+router.get('/', function(req, res){
 
-    positionService.findPosition({}, function(err, positionList){
+    var condition = _.extend(options, {});
+
+    positionService.findPosition({}, function(err, results){
 
         if (err) {
             console.log(err);
         } else {
+            condition.count = results[0];
+            condition.pageNum = Math.ceil(results[0] / condition.pageSize);
             res.render('main', {
-                positionList: positionList,
+                positionList: results[1],
                 condition: options
             });
         }
     });
 });
 
-router.post('/search', function(req, res, next){
+router.post('/search', function(req, res){
 
     var opts = req.body;
+    var condition = _.extend(options, opts);
 
-    positionService.findPosition(opts, function(err, positionList){
-
+    positionService.findPosition(opts, function(err, results){
         if (err) {
             console.log(err);
         } else {
+            condition.count = results[0];
+            condition.pageNum = Math.ceil(results[0] / condition.pageSize);
             res.render('main', {
-                positionList: positionList,
-                condition: _.extend(options, opts)
-            });
-        }
-    });
-});
-
-router.post('/list', function(req, res, next){
-
-    var opts = req.body;
-
-    positionService.findPosition(opts, function(err, positionList){
-
-        if (err) {
-            console.log(err);
-        } else {
-            //res.render('main', {
-            //    positionList: positionList,
-            //    condition: _.extend(positionService.condition, opts)
-            //});
-            res.send({
-                positionList: positionList,
-                condition: _.extend(options, opts)
+                positionList: results[1],
+                condition: condition
             });
         }
     });

@@ -25,10 +25,10 @@
         <nav class="navbar navbar-inverse navbar-embossed main-nav" role="navigation">
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-left">
-                    <li><a href="#">职位检索</a></li>
-                    <li><a href="#">我的收藏<span class="navbar-new">12</span></a></li>
-                    <li><a href="#">关于作者</a></li>
-                    <li><a href="#">网站介绍</a></li>
+                    <li class="active"><a href="/positions">职位检索</a></li>
+                    <li><a href="views/favorite.html">我的收藏<span class="navbar-new">12</span></a></li>
+                    <li><a href="views/aboutme.html">关于作者</a></li>
+                    <li><a href="views/introduce.html">网站介绍</a></li>
                 </ul>
             </div>
         </nav>
@@ -75,11 +75,11 @@
                 </div>
         </section>
         <section class="position-sort-bar">
-            <div id="sortForm">
+            <span id="sortForm">
                 <span class="sort-tag <%= (condition ? condition.sortField : '') == '_id' ? 'active' : '' %>" data-val="_id">默认</span>
                 <span class="sort-tag <%= (condition ? condition.sortField : '') == 'create_time' ? 'active' : '' %>" data-val="create_time">最新</span>
-            </div>
-            <div id="sortForm2">
+            </span>
+            <span id="sortForm2">
                 <label data-val="salary" class="sort sort-tag <%= (condition ? condition.sortField : '') == 'salary' ? 'active' : '' %>">
                     <span>薪资</span>
                     <span class="order-icon <%= ((condition ? condition.sortField : '') == 'salary') && ((condition ? condition.sortOrder : 0) > 0) ? 'fui-triangle-up' : 'fui-triangle-down' %>"></span>
@@ -90,7 +90,7 @@
                 </label>
                 <input type="hidden" name="sortField" value="<%= condition ? condition.sortField : '_id' %>">
                 <input type="hidden" name="sortOrder" value="<%= condition ? condition.sortOrder : -1 %>">
-            </div>
+            </span>
         </section>
         <div class="container position-list">
             <% for (var i = 0; i < positionList.length; i++) { %>
@@ -174,17 +174,23 @@
         </div>
         <div class="pagination-wrapper">
             <div class="pagination pagination-info">
-                <a href="#fakelink" class="btn btn-info previous">
+                <a href="javascript:void(0);" class="btn btn-info previous <%= (condition.curPage<=1)?'disabled':''%>">
                     <i class="fui-arrow-left"></i>
                 </a>
                 <ul>
-                    <li><a href="#fakelink">1</a></li>
-                    <li><a href="#fakelink">2</a></li>
-                    <li><a href="#fakelink">3</a></li>
+                    <% for(var i = 1; i <= condition.pageNum; i++) { %>
+                    <li class="<%= (i==condition.curPage) ? 'active': '' %>" data-page="<%= i %>"><a href="javascript:void(0);"><%= i %></a></li>
+                    <% } %>
                 </ul>
-                <a href="#fakelink" class="btn btn-info next">
+                <a href="javascript:void(0);" class="btn btn-info next <%= (condition.curPage>=condition.pageNum)?'disabled':''%>">
                     <i class="fui-arrow-right"></i>
                 </a>
+                <span>
+                    <span>总页数/总条数:</span>
+                    <span><%= condition.pageNum %>/<%= condition.count %></span>
+                </span>
+                <input type="hidden" name="pageNum" value="<%= condition.pageNum %>">
+                <input type="hidden" name="curPage" value="<%= condition.curPage %>">
             </div>
         </div>
         </form>
@@ -197,6 +203,14 @@
             $('[data-toggle="switch"]').bootstrapSwitch();
 
             fillDescContent();
+
+            $(".main-nav").affix({
+                offset: {
+                    top: function(){
+                        return parseInt($(".position-sort-bar").offset().top);
+                    }
+                }
+            });
 
             $(".work-year").click(function(){
                 $(this).toggleClass("active");
@@ -213,6 +227,7 @@
             // 排序
             $("#sortForm .sort-tag").click(function(){
                 $("input[name='sortField']").val($(this).attr("data-val"));
+                $("input[name='curPage']").val(1);
                 $("#searchForm").submit();
             });
 
@@ -232,11 +247,30 @@
 
                 $("input[name='sortField']").val(sortField);
                 $("input[name='sortOrder']").val(sortOrder);
+                $("input[name='curPage']").val(1);
 
                 $("#searchForm").submit();
             });
 
             //  分页
+            $(".pagination .next").click(function(){
+                var curPage = parseInt($("input[name='curPage']").val());
+                var pageNum = parseInt($("input[name='pageNum']").val());
+                $("input[name='curPage']").val((curPage+1)>=pageNum?pageNum:curPage+1);
+                $("#searchForm").submit();
+            });
+
+            $(".pagination .previous").click(function(){
+                var curPage = parseInt($("input[name='curPage']").val());
+                var pageNum = parseInt($("input[name='pageNum']").val());
+                $("input[name='curPage']").val((curPage-1)<=1?1:curPage-1);
+                $("#searchForm").submit();
+            });
+
+            $(".pagination > ul li").click(function(){
+                $("input[name='curPage']").val(parseInt($(this).attr("data-page")));
+                $("#searchForm").submit();
+            });
 
         });
 

@@ -1,0 +1,57 @@
+@charset "UTF-8";
+
+* {
+  outline: none;
+}
+
+$baseFontSize: 16px;
+$baseColor: #666;
+$baseBorderColor: #3498DB;
+$baseImgUrl: '/public/images';
+$baseHighLight: #1abc9c;
+
+@mixin bg($imageName, $width, $height) {
+  display: inline-block;
+  vertical-align: middle;
+  background: url("/public/images/#{$imageName}") no-repeat;
+  width: $width;
+  height: $height;
+}
+
+body {
+  font-family: "Microsoft YaHei",Lato,Helvetica,Arial,sans-serif;
+  font-size: $baseFontSize;
+  color: $baseColor;
+}
+
+header {
+  text-align: center;
+  padding: 15px 0;
+  font-size: 30px;
+}
+
+footer {
+  text-align: center;
+  padding: 10px 0;
+  font-size: $baseFontSize;
+}
+
+p {
+  font-size: $baseFontSize;
+  margin: 0;
+}
+
+.main-container {
+  width: 1170px;
+  margin: 10px auto;
+
+  .main-nav {
+    margin-bottom: 10px;
+    width: 1170px;
+    z-index: 2;
+
+    &.affix {
+      top: 2px;
+    }
+  }
+}

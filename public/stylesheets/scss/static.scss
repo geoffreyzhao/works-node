@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+// 静态页面样式
+
+@import "base";
+
+// 收藏页面
+
+.content {
+  text-align: center;
+  min-height: 550px;
+  padding: 100px 0;
+
+  .desc {
+    font-size: 22px;
+  }
+}
+
+// 网站介绍
+
+// 关于作者

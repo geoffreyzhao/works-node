@@ -47,6 +47,12 @@ p {
 
   .main-nav {
     margin-bottom: 10px;
+    width: 1170px;
+    z-index: 2;
+
+    &.affix {
+      top: 2px;
+    }
   }
 }
 

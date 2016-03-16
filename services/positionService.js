@@ -6,6 +6,7 @@ mongoose.connect('mongodb://localhost/works');
 var Schema = mongoose.Schema;
 
 var _ = require('underscore');
+var async = require('async');
 
 var positionSchema = new Schema({
     is_visible: Boolean,
@@ -45,7 +46,17 @@ var positionSchema = new Schema({
 
 var positionModel = mongoose.model('Position', positionSchema);
 
-exports.findPosition = function(opts, callback) {
+//function Position(position) {
+//    console.log("position constructor");
+//}
+//
+//Position.prototype.findPosition = function () {
+//
+//}
+//
+//module.exports = Position;
+
+function findPosition(opts, callback) {
 
     var defaultOptions = {
         workYear: "1-3年,3-5年",
@@ -75,16 +86,37 @@ exports.findPosition = function(opts, callback) {
     var field = (options.sortField == 'timely_rate') ? 'publisher.timely_rate' : options.sortField;
     var sort = options.sortOrder < 0 ? '-' + field : field;
 
-    positionModel
-        .find({
-            'company.address': {$regex: options.address},
-            'work_year': {$in: options.workYear.split(',')},
-            'salary': {$regex: salaryRegex},
-            'publisher.timely_rate': {$gte: options.timelyRate + '%'},
-            'publisher.avg_time': {$lte: options.avgTime + '天'}
-        })
-        .sort(sort)
-        .skip((options.curPage - 1) * options.pageSize)
-        .limit(options.pageSize)
-        .exec(callback);
+    async.parallel([
+        function(cb){
+            positionModel
+                .find({
+                    'company.address': {$regex: options.address},
+                    'work_year': {$in: options.workYear.split(',')},
+                    'salary': {$regex: salaryRegex},
+                    'publisher.timely_rate': {$gte: options.timelyRate + '%'},
+                    'publisher.avg_time': {$lte: options.avgTime + '天'}
+                }).count(function(err, count){
+                    cb(err, count);
+                });
+        },
+        function(cb){
+            positionModel
+                .find({
+                    'company.address': {$regex: options.address},
+                    'work_year': {$in: options.workYear.split(',')},
+                    'salary': {$regex: salaryRegex},
+                    'publisher.timely_rate': {$gte: options.timelyRate + '%'},
+                    'publisher.avg_time': {$lte: options.avgTime + '天'}
+                }).sort(sort)
+                .skip((options.curPage - 1) * options.pageSize)
+                .limit(options.pageSize)
+                .exec(function(err, list){
+                    cb(err, list);
+                });
+        }
+    ], function(err, results){
+        callback(err, results);
+    });
 }
+
+exports.findPosition = findPosition;
